@@ -88,10 +88,10 @@ class HomePage extends StatelessWidget {
 
         // Pinned apps
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 60),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
           child: Obx(
             () => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children:
                   controller.pinnedApps.map((packageName) {
                     // Find the app with this package name
@@ -105,12 +105,15 @@ class HomePage extends StatelessWidget {
 
                     final app = appList.first;
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: GestureDetector(
-                        onTap: () {
-                          controller.launchApp(packageName);
-                        },
+                    return GestureDetector(
+                      onTap: () {
+                        controller.launchApp(packageName);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0,
+                        ),
                         child: Text(
                           app.appName,
                           overflow: TextOverflow.ellipsis,

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/utils/media_stream_service.dart';
@@ -82,5 +85,61 @@ class MusicController extends GetxController {
       isAvailable.value = false;
       print('Failed to send media command: $e');
     }
+  }
+
+  Widget buildThumbnail() {
+    final String raw = thumbnail.value.trim();
+
+    // Show fallback if the value is empty
+    if (raw.isEmpty) {
+      return _fallbackThumbnail();
+    }
+
+    try {
+      // Check if it's a URL
+      if (raw.toLowerCase().startsWith('http')) {
+        return _buildImageContainer(image: NetworkImage(raw));
+      } else {
+        // Assume it's Base64
+        final sanitized = raw.replaceAll(RegExp(r'\s+'), '');
+        final padded = sanitized.padRight((sanitized.length + 3) ~/ 4 * 4, '=');
+        final bytes = base64Decode(padded);
+        return _buildImageContainer(image: MemoryImage(bytes));
+      }
+    } catch (e) {
+      debugPrint("Thumbnail decode/load failed: $e");
+      return _fallbackThumbnail();
+    }
+  }
+
+  Widget _buildImageContainer({required ImageProvider image}) {
+    return Container(
+      width: 280,
+      height: 280,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(color: Colors.grey, blurRadius: 15, spreadRadius: 1),
+        ],
+        image: DecorationImage(image: image, fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  Widget _fallbackThumbnail() {
+    return Container(
+      width: 280,
+      height: 280,
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(color: Colors.grey, blurRadius: 15, spreadRadius: 1),
+        ],
+      ),
+      child: Center(
+        child: Icon(Icons.music_note, size: 120, color: Colors.grey),
+      ),
+    );
   }
 }

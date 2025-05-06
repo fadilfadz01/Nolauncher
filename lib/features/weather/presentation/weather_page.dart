@@ -6,39 +6,63 @@ import 'package:weather_icons/weather_icons.dart';
 
 class WeatherPage extends StatelessWidget {
   WeatherPage({super.key});
-  final WeatherController weatherController = Get.put(WeatherController());
+  final WeatherController controller = Get.put(WeatherController());
 
   @override
   Widget build(BuildContext context) {
-    if (weatherController.isLoading.value) {
-      return const Center(child: CircularProgressIndicator());
-    } else {
-      return SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 24,
-              children: [
-                _buildCurrentWeather(),
-                _buildHourlyForecast(),
-                _buildDailyForecast(),
-                _buildAdditionalInfo(),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
+    final currentWeatherWidget = _buildCurrentWeather();
+    final hourlyForecastWidget = _buildHourlyForecast();
+    final dailyForecastWidget = _buildDailyForecast();
+    final additionalInfoWidget = _buildAdditionalInfo();
+
+    return Obx(
+      () =>
+          controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : controller.weatherData.value == null
+              ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 12,
+                  children: [
+                    Icon(Icons.signal_wifi_off, size: 60, color: Colors.grey),
+                    Text(
+                      "No internet connection",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              : SafeArea(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 24,
+                      children: [
+                        currentWeatherWidget,
+                        hourlyForecastWidget,
+                        dailyForecastWidget,
+                        additionalInfoWidget,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+    );
   }
 
   Widget _buildCurrentWeather() {
     return Obx(() {
       final currentCondition =
-          weatherController.weatherData.value?.currentCondition[0];
-      final location = weatherController.weatherData.value?.nearestArea[0];
+          controller.weatherData.value?.currentCondition[0];
+      final location = controller.weatherData.value?.nearestArea[0];
       final locationName = location?.areaName[0].value;
       final country = location?.country[0].value;
       final region = location?.region[0].value;
@@ -125,9 +149,7 @@ class WeatherPage extends StatelessWidget {
           child: Obx(
             () => Row(
               children:
-                  weatherController.weatherData.value?.weather[0].hourly.map((
-                    hourly,
-                  ) {
+                  controller.weatherData.value?.weather[0].hourly.map((hourly) {
                     final time = int.parse(hourly.time) ~/ 100;
                     final timeString =
                         time == 0
@@ -193,9 +215,9 @@ class WeatherPage extends StatelessWidget {
           () => ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: weatherController.weatherData.value?.weather.length,
+            itemCount: controller.weatherData.value?.weather.length,
             itemBuilder: (context, index) {
-              final daily = weatherController.weatherData.value?.weather[index];
+              final daily = controller.weatherData.value?.weather[index];
               final date = DateTime.parse(daily?.date ?? "");
               final dayName = DateFormat('EEEE').format(date);
               final isToday = index == 0;
@@ -251,9 +273,9 @@ class WeatherPage extends StatelessWidget {
         ),
         Obx(() {
           final currentCondition =
-              weatherController.weatherData.value?.currentCondition[0];
+              controller.weatherData.value?.currentCondition[0];
           final astronomy =
-              weatherController.weatherData.value?.weather[0].astronomy[0];
+              controller.weatherData.value?.weather[0].astronomy[0];
 
           final data = [
             {

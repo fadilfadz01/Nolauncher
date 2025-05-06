@@ -58,11 +58,11 @@ class HomeController extends GetxController {
   }
 
   Future<void> loadPinnedApps() async {
-    pinnedApps.value = _prefs.getValue('pinnedApps', [].cast<String>());
+    pinnedApps.value = _prefs.getValue('pinnedApps', <String>[]);
   }
 
   Future<void> savePinnedApps() async {
-    await _prefs.setValue('pinnedApps', pinnedApps);
+    await _prefs.setValue('pinnedApps', pinnedApps.toList());
   }
 
   void togglePinApp(String packageName) {
