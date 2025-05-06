@@ -1,4 +1,4 @@
-package com.example.nolauncher
+package com.fadilfadz.nolauncher
 
 import android.content.ComponentName
 import android.content.Intent

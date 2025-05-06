@@ -1,4 +1,4 @@
-package com.example.nolauncher
+package com.fadilfadz.nolauncher
 
 import android.content.ComponentName
 import android.content.Intent
@@ -15,8 +15,8 @@ import io.flutter.plugin.common.EventChannel
 import java.io.ByteArrayOutputStream
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.example.media_info"
-    private val EVENT_CHANNEL = "com.example.media_updates"
+    private val CHANNEL = "com.fadilfadz.media_info"
+    private val EVENT_CHANNEL = "com.fadilfadz.media_updates"
 
     companion object {
         var eventSink: EventChannel.EventSink? = null

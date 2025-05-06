@@ -34,7 +34,7 @@ class AppsPage extends StatelessWidget {
                         controller.searchEditingController.clear();
                         controller.searchText.value =
                             ''; // Reset the observable text
-                        controller.listedApps.value = homeController.allApps;
+                        controller.listedApps.value = controller.allApps;
                       },
                     )
                     : const SizedBox.shrink();
@@ -42,7 +42,7 @@ class AppsPage extends StatelessWidget {
             ),
             onChanged: (value) async {
               controller.listedApps.value =
-                  homeController.allApps
+                  controller.allApps
                       .where(
                         (e) =>
                             e.appName.toLowerCase().startsWith(

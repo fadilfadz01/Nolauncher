@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/config/constants.dart';
+import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/home/presentation/home_controller.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   final controller = Get.put(HomeController());
+  final appsController = Get.put(AppsController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class HomePage extends StatelessWidget {
                 'com.asus.deskclock',
                 'com.evenwell.AlarmClock',
               ];
-              final clocks = controller.allApps.where(
+              final clocks = appsController.allApps.where(
                 (e) =>
                     e.appName.toLowerCase() == "clock" ||
                     e.appName.toLowerCase() == "alarm",
@@ -96,7 +98,7 @@ class HomePage extends StatelessWidget {
                   controller.pinnedApps.map((packageName) {
                     // Find the app with this package name
                     final appList =
-                        controller.allApps
+                        appsController.allApps
                             .where((app) => app.packageName == packageName)
                             .toList();
                     if (appList.isEmpty) {
@@ -156,7 +158,7 @@ class HomePage extends StatelessWidget {
                     'com.lenovo.dialer',
                     'com.evenwell.Dialer',
                   ];
-                  final phones = controller.allApps.where(
+                  final phones = appsController.allApps.where(
                     (e) => e.appName.toLowerCase() == "phone",
                   );
                   for (final phone in phones) {
@@ -188,7 +190,7 @@ class HomePage extends StatelessWidget {
                     'com.evenwell.Camera2',
                     'com.android.camera2',
                   ];
-                  final cameras = controller.allApps.where(
+                  final cameras = appsController.allApps.where(
                     (e) => e.appName.toLowerCase() == "camera",
                   );
                   for (final camera in cameras) {

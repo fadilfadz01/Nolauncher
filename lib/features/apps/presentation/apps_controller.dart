@@ -1,12 +1,10 @@
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nolauncher/features/home/presentation/home_controller.dart';
 
 class AppsController extends GetxController {
-  final homeController = Get.find<HomeController>();
-
   final TextEditingController searchEditingController = TextEditingController();
+  final RxList<Application> allApps = RxList([]);
   final RxList<Application> listedApps = RxList([]);
   final searchText = ''.obs;
 
@@ -26,12 +24,16 @@ class AppsController extends GetxController {
       onlyAppsWithLaunchIntent: true,
     );
 
+    // Filter out this app
+    apps =
+        apps.where((e) => e.packageName != "com.fadilfadz.nolauncher").toList();
+
     // Sort apps alphabetically
     apps.sort(
       (a, b) => a.appName.toLowerCase().compareTo(b.appName.toLowerCase()),
     );
 
-    homeController.allApps.value = apps;
+    allApps.value = apps;
     listedApps.value = apps;
   }
 }

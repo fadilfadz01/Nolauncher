@@ -11,7 +11,6 @@ class HomeController extends GetxController {
   final _prefs = Get.put(SharedPrefSercice());
   final settingsController = Get.put(SettingsController());
 
-  final RxList<Application> allApps = RxList([]);
   final RxList<String> pinnedApps = RxList([]);
   final RxString currentTime = ''.obs;
   final RxString currentTimeType = ''.obs;
