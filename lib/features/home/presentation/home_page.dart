@@ -15,117 +15,118 @@ class HomePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Clock
-        Expanded(
-          child: GestureDetector(
-            onTap: () async {
-              const clockPackages = [
-                'com.android.deskclock',
-                'com.android.alarmclock',
-                'com.google.android.deskclock',
-                'com.htc.android.worldclock',
-                'com.sec.android.app.clockpackage',
-                'com.motorola.blur.alarmclock',
-                'com.lge.clock',
-                'com.sonyericsson.alarm',
-                'zte.com.cn.alarmclock',
-                'com.oneplus.deskclock',
-                'com.coloros.alarmclock',
-                'com.vivo.alarmclock',
-                'com.huawei.deskclock',
-                'com.miui.clock',
-                'com.realme.clock',
-                'com.lenovo.alarmclock',
-                'com.oppo.alarmclock',
-                'com.asus.deskclock',
-                'com.evenwell.AlarmClock',
-              ];
-              final clocks = appsController.allApps.where(
-                (e) =>
-                    e.appName.toLowerCase() == "clock" ||
-                    e.appName.toLowerCase() == "alarm",
-              );
-              for (final clock in clocks) {
-                if (clockPackages.contains(clock.packageName)) {
-                  controller.launchApp(clock.packageName);
-                }
+        GestureDetector(
+          onTap: () async {
+            const clockPackages = [
+              'com.android.deskclock',
+              'com.android.alarmclock',
+              'com.google.android.deskclock',
+              'com.htc.android.worldclock',
+              'com.sec.android.app.clockpackage',
+              'com.motorola.blur.alarmclock',
+              'com.lge.clock',
+              'com.sonyericsson.alarm',
+              'zte.com.cn.alarmclock',
+              'com.oneplus.deskclock',
+              'com.coloros.alarmclock',
+              'com.vivo.alarmclock',
+              'com.huawei.deskclock',
+              'com.miui.clock',
+              'com.realme.clock',
+              'com.lenovo.alarmclock',
+              'com.oppo.alarmclock',
+              'com.asus.deskclock',
+              'com.evenwell.AlarmClock',
+            ];
+            final clocks = appsController.allApps.where(
+              (e) =>
+                  e.appName.toLowerCase() == "clock" ||
+                  e.appName.toLowerCase() == "alarm",
+            );
+            for (final clock in clocks) {
+              if (clockPackages.contains(clock.packageName)) {
+                controller.launchApp(clock.packageName);
               }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Obx(
-                () => Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          controller.currentTime.value,
-                          style: const TextStyle(
-                            fontSize: AppFontSizes.clockTimeSize,
-                          ),
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Obx(
+              () => Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        controller.currentTime.value,
+                        style: const TextStyle(
+                          fontSize: AppFontSizes.clockTimeSize,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30.0),
-                          child: Text(
-                            controller.currentTimeType.value,
-                            style: const TextStyle(
-                              fontSize: AppFontSizes.smallSize,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      controller.currentDate.value,
-                      style: const TextStyle(
-                        fontSize: AppFontSizes.clockDateSize,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Text(
+                          controller.currentTimeType.value,
+                          style: const TextStyle(
+                            fontSize: AppFontSizes.smallSize,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    controller.currentDate.value,
+                    style: const TextStyle(
+                      fontSize: AppFontSizes.clockDateSize,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
 
         // Pinned apps
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
-          child: Obx(
-            () => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children:
-                  controller.pinnedApps.map((packageName) {
-                    // Find the app with this package name
-                    final appList =
-                        appsController.allApps
-                            .where((app) => app.packageName == packageName)
-                            .toList();
-                    if (appList.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
+            child: Obx(
+              () => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children:
+                    controller.pinnedApps.map((packageName) {
+                      // Find the app with this package name
+                      final appList =
+                          appsController.allApps
+                              .where((app) => app.packageName == packageName)
+                              .toList();
+                      if (appList.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
 
-                    final app = appList.first;
+                      final app = appList.first;
 
-                    return GestureDetector(
-                      onTap: () {
-                        controller.launchApp(packageName);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 12.0,
-                        ),
-                        child: Text(
-                          app.appName,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: AppFontSizes.pinnedAppsSize,
+                      return GestureDetector(
+                        onTap: () {
+                          controller.launchApp(packageName);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 12.0,
+                          ),
+                          child: Text(
+                            app.appName,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: AppFontSizes.pinnedAppsSize,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(),
+                      );
+                    }).toList(),
+              ),
             ),
           ),
         ),

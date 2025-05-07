@@ -31,7 +31,7 @@ class SettingsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Status Bar"),
+                        Text("Status bar visibility"),
                         Obx(
                           () => Switch(
                             value: controller.isStatusbarVisible.value,
@@ -46,8 +46,20 @@ class SettingsPage extends StatelessWidget {
                         Text("24 hour clock"),
                         Obx(
                           () => Switch(
-                            value: controller.isclockFormat24.value,
+                            value: controller.isClockFormat24.value,
                             onChanged: controller.setClockFormat,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Double tap to screen lock"),
+                        Obx(
+                          () => Switch(
+                            value: controller.isDoubleTapToLock.value,
+                            onChanged: controller.setDoubleTapToLock,
                           ),
                         ),
                       ],

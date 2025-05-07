@@ -4,19 +4,20 @@ import 'package:get/get.dart';
 import 'package:nolauncher/core/utils/shared_pref_sercice.dart';
 
 class SettingsController extends GetxController {
-  final _prefs = Get.find<SharedPrefSercice>();
+  final _prefs = Get.put(SharedPrefSercice());
 
   final themeIcon = Icons.light_mode.obs;
-  final isclockFormat24 = true.obs;
   final isStatusbarVisible = true.obs;
+  final isClockFormat24 = true.obs;
+  final isDoubleTapToLock = true.obs;
 
   @override
   void onInit() async {
     super.onInit();
     await _prefs.init();
     themeIcon.value = Get.isDarkMode ? Icons.light_mode : Icons.dark_mode;
-    final format = _prefs.getValue('clockFormat', true);
-    isclockFormat24.value = format;
+    isClockFormat24.value = _prefs.getValue('clockFormat', true);
+    isDoubleTapToLock.value = _prefs.getValue('doubleTapToLock', true);
     SystemChrome.setSystemUIChangeCallback((systemOverlaysAreVisible) async {
       Future.delayed(Duration(seconds: 2), () {
         _prefs.getValue('statusBarVisibility', true)
@@ -44,11 +45,6 @@ class SettingsController extends GetxController {
     }
   }
 
-  setClockFormat(value) async {
-    isclockFormat24.value = value;
-    await _prefs.setValue('clockFormat', value);
-  }
-
   setStatusBar(value) async {
     isStatusbarVisible.value = value;
     if (value) {
@@ -63,5 +59,15 @@ class SettingsController extends GetxController {
       );
     }
     await _prefs.setValue('statusBarVisibility', value);
+  }
+
+  setClockFormat(value) async {
+    isClockFormat24.value = value;
+    await _prefs.setValue('clockFormat', value);
+  }
+
+  setDoubleTapToLock(value) async {
+    isDoubleTapToLock.value = value;
+    await _prefs.setValue('doubleTapToLock', value);
   }
 }

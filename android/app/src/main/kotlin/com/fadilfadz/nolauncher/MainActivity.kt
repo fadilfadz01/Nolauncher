@@ -1,6 +1,8 @@
 package com.fadilfadz.nolauncher
 
+import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaMetadata
@@ -15,8 +17,10 @@ import io.flutter.plugin.common.EventChannel
 import java.io.ByteArrayOutputStream
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.fadilfadz.media_info"
+    private val MEDIA_CHANNEL = "com.fadilfadz.media_info"
+    private val LOCK_CHANNEL = "com.fadilfadz.device_lock"
     private val EVENT_CHANNEL = "com.fadilfadz.media_updates"
+    private val SETTINGS_CHANNEL = "com.fadilfadz.device_settings"
 
     companion object {
         var eventSink: EventChannel.EventSink? = null
@@ -25,7 +29,7 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, MEDIA_CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "getNowPlaying") {
                 val metadata = MediaNotificationListener.currentMetadata
                 val mediaSessionManager = getSystemService(MediaSessionManager::class.java)
@@ -120,6 +124,33 @@ class MainActivity : FlutterActivity() {
             }
         }
 
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, LOCK_CHANNEL).setMethodCallHandler {
+            call, result ->
+            if (call.method == "lockScreen") {
+                val devicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                val componentName = ComponentName(this, MyDeviceAdminReceiver::class.java)
+
+                if (devicePolicyManager.isAdminActive(componentName)) {
+                    devicePolicyManager.lockNow()
+                    result.success(null)
+                } else {
+                    result.error("NOT_ADMIN", "App is not a device admin", null)
+                }
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, SETTINGS_CHANNEL)
+        .setMethodCallHandler { call, result ->
+            if (call.method == "openDeviceAdminSettings") {
+                val intent = Intent().setComponent(
+                    ComponentName("com.android.settings", "com.android.settings.DeviceAdminSettings")
+                )
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                result.success(true)
+            }
+        }
+
         EventChannel(flutterEngine.dartExecutor.binaryMessenger, EVENT_CHANNEL)
             .setStreamHandler(object : EventChannel.StreamHandler {
                 override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
@@ -131,7 +162,8 @@ class MainActivity : FlutterActivity() {
                     Log.d("MainActivity", "Flutter stopped listening.")
                     eventSink = null
                 }
-            })
+            }
+        )
     }
 
     private fun bitmapToBase64(bitmap: Bitmap): String {

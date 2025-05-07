@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class MainController extends GetxController {
+  static const lockPlatform = MethodChannel('com.fadilfadz.device_lock');
+  static const settingsPlatform = MethodChannel(
+    'com.fadilfadz.device_settings',
+  );
+
+  final settingsController = Get.put(SettingsController());
+
   late PageController pageController;
   late ScrollController scrollController;
 
@@ -31,5 +40,22 @@ class MainController extends GetxController {
     super.onClose();
     pageController.dispose();
     scrollController.dispose();
+  }
+
+  Future<void> lockScreen() async {
+    try {
+      await lockPlatform.invokeMethod('lockScreen');
+    } on PlatformException catch (e) {
+      print("Failed to lock screen: ${e.message}");
+      _openDeviceAdminSettings();
+    }
+  }
+
+  static Future<void> _openDeviceAdminSettings() async {
+    try {
+      await settingsPlatform.invokeMethod('openDeviceAdminSettings');
+    } on PlatformException catch (e) {
+      print('Failed to open settings: ${e.message}');
+    }
   }
 }

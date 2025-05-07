@@ -28,6 +28,11 @@ class MainPage extends StatelessWidget {
         body: SafeArea(
           child: GestureDetector(
             onLongPress: () => Get.to(() => SettingsPage()),
+            onDoubleTap: () {
+              controller.settingsController.isDoubleTapToLock.value
+                  ? controller.lockScreen()
+                  : null;
+            },
             child: PageView.builder(
               controller: controller.pageController,
               scrollDirection: Axis.vertical,

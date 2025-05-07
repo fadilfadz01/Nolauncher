@@ -10,6 +10,7 @@ enum MusicCommands { play, pause, next, previous }
 
 class MusicController extends GetxController {
   static const platform = MethodChannel('com.fadilfadz.media_info');
+
   final isPermissionAllowed = false.obs;
   final isAvailable = false.obs;
   final title = ''.obs;

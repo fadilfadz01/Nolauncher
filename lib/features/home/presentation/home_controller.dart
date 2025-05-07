@@ -8,7 +8,7 @@ import 'package:nolauncher/core/utils/shared_pref_sercice.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class HomeController extends GetxController {
-  final _prefs = Get.put(SharedPrefSercice());
+  final _prefs = Get.find<SharedPrefSercice>();
   final settingsController = Get.put(SettingsController());
 
   final RxList<String> pinnedApps = RxList([]);

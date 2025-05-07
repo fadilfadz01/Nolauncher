@@ -6,10 +6,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/network/api_client.dart';
+import 'package:nolauncher/core/utils/shared_pref_sercice.dart';
 import 'package:nolauncher/features/weather/data/weather.dart';
 
 class WeatherController extends GetxController {
   final api = Get.put(ApiClient());
+  final _prefs = Get.find<SharedPrefSercice>();
 
   final weatherData = Rx<WeatherResponse?>(null);
   final isLoading = true.obs;
@@ -54,7 +56,7 @@ class WeatherController extends GetxController {
   }
 
   Future<String> _getCityNameFromLocation() async {
-    const fallbackCity = 'New York';
+    final fallbackCity = _prefs.getValue('weatherLocation', 'New York');
 
     try {
       // Check and request location permissions
@@ -87,13 +89,16 @@ class WeatherController extends GetxController {
 
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        return place.locality?.isNotEmpty == true
-            ? place.locality!
-            : (place.subAdministrativeArea?.isNotEmpty == true
-                ? place.subAdministrativeArea!
-                : (place.name?.isNotEmpty == true
-                    ? place.name!
-                    : fallbackCity));
+        final String exactPlace =
+            place.locality?.isNotEmpty == true
+                ? place.locality!
+                : (place.subAdministrativeArea?.isNotEmpty == true
+                    ? place.subAdministrativeArea!
+                    : (place.name?.isNotEmpty == true
+                        ? place.name!
+                        : fallbackCity));
+        await _prefs.setValue('weatherLocation', exactPlace);
+        return exactPlace;
       }
     } catch (e) {
       print('Location fetch error: $e');
