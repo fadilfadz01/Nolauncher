@@ -88,35 +88,41 @@ class MusicController extends GetxController {
     }
   }
 
-  Widget buildThumbnail() {
+  Widget buildThumbnail({required BuildContext context}) {
     final String raw = thumbnail.value.trim();
 
     // Show fallback if the value is empty
     if (raw.isEmpty) {
-      return _fallbackThumbnail();
+      return _fallbackThumbnail(context: context);
     }
 
     try {
       // Check if it's a URL
       if (raw.toLowerCase().startsWith('http')) {
-        return _buildImageContainer(image: NetworkImage(raw));
+        return _buildImageContainer(context: context, image: NetworkImage(raw));
       } else {
         // Assume it's Base64
         final sanitized = raw.replaceAll(RegExp(r'\s+'), '');
         final padded = sanitized.padRight((sanitized.length + 3) ~/ 4 * 4, '=');
         final bytes = base64Decode(padded);
-        return _buildImageContainer(image: MemoryImage(bytes));
+        return _buildImageContainer(
+          context: context,
+          image: MemoryImage(bytes),
+        );
       }
     } catch (e) {
       debugPrint("Thumbnail decode/load failed: $e");
-      return _fallbackThumbnail();
+      return _fallbackThumbnail(context: context);
     }
   }
 
-  Widget _buildImageContainer({required ImageProvider image}) {
+  Widget _buildImageContainer({
+    required BuildContext context,
+    required ImageProvider image,
+  }) {
     return Container(
-      width: 280,
-      height: 280,
+      width: MediaQuery.of(context).size.width / 1.6,
+      height: MediaQuery.of(context).size.width / 1.6,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
@@ -127,10 +133,10 @@ class MusicController extends GetxController {
     );
   }
 
-  Widget _fallbackThumbnail() {
+  Widget _fallbackThumbnail({required BuildContext context}) {
     return Container(
-      width: 280,
-      height: 280,
+      width: MediaQuery.of(context).size.width / 1.6,
+      height: MediaQuery.of(context).size.width / 1.6,
       decoration: BoxDecoration(
         color: Colors.grey[900],
         borderRadius: BorderRadius.circular(12),

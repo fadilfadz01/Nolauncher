@@ -22,7 +22,12 @@ class PinnedAppsPage extends StatelessWidget {
             .toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Pinned Apps")),
+      appBar: AppBar(
+        title: Text(
+          "Pinned Apps",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body:
           pinnedApps.isNotEmpty
               ? Padding(

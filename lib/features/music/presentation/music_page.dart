@@ -9,7 +9,9 @@ class MusicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     controller.checkNotificationPermission();
-    final thumbnailWidget = Obx(() => controller.buildThumbnail());
+    final thumbnailWidget = Obx(
+      () => controller.buildThumbnail(context: context),
+    );
 
     return Obx(() {
       return controller.isPermissionAllowed.value

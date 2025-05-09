@@ -84,13 +84,13 @@ class MainPage extends StatelessWidget {
 
                       // Trigger only if drag is from right edge and moving left enough
                       if (controller.initialDragX.value >
-                              MediaQuery.of(context).size.width - 40 &&
+                              MediaQuery.of(context).size.width - 20 &&
                           dragDistance < -10) {
                         controller.displayPageIndicator();
                       }
                     },
                     child: Container(
-                      width: 40, // right-edge swipe zone width
+                      width: 20, // right-edge swipe zone width
                       color:
                           Colors.transparent, // invisible but captures gestures
                     ),
@@ -107,7 +107,7 @@ class MainPage extends StatelessWidget {
                     right:
                         controller.showPageIndicator.value
                             ? 20
-                            : -50, // Moves off-screen when hidden
+                            : -100, // Moves off-screen when hidden
                     top:
                         MediaQuery.of(context).size.height / 2 -
                         (pages.length * 20),
@@ -150,7 +150,8 @@ class MainPage extends StatelessWidget {
                                 ),
                                 child: Icon(
                                   iconsList[index],
-                                  size: 20,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.05,
                                   color:
                                       isActive
                                           ? Theme.of(context).primaryColor

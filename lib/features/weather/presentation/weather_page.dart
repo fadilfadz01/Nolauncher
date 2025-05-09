@@ -182,17 +182,16 @@ class WeatherPage extends StatelessWidget {
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        spacing: 8,
                         children: [
                           Text(
                             timeString,
                             style: const TextStyle(fontSize: 14),
                           ),
-                          const SizedBox(height: 8),
                           _buildWeatherIcon(
                             hourly.weatherDesc[0].value,
                             size: 24,
                           ),
-                          const SizedBox(height: 8),
                           Text(
                             '${hourly.tempC}°',
                             style: const TextStyle(
