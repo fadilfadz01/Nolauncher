@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/config/constants.dart';
+import 'package:nolauncher/core/utils/custom_scroll_physics.dart';
 import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/home/presentation/home_controller.dart';
 import 'package:nolauncher/features/main/presentation/main_controller.dart';
+import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class AppsPage extends StatelessWidget {
   AppsPage({super.key});
-  final controller = Get.put(AppsController());
+  final controller = Get.find<AppsController>();
   final mainController = Get.find<MainController>();
   final homeController = Get.find<HomeController>();
 
@@ -41,20 +43,24 @@ class AppsPage extends StatelessWidget {
               }),
             ),
             onChanged: (value) async {
+              final settingsController = Get.find<SettingsController>();
               controller.listedApps.value =
                   controller.allApps
                       .where(
                         (e) =>
-                            e.appName.toLowerCase().startsWith(
-                              controller.searchEditingController.text
-                                  .trim()
-                                  .toLowerCase(),
-                            ) ||
-                            e.appName.toLowerCase().contains(
-                              controller.searchEditingController.text
-                                  .trim()
-                                  .toLowerCase(),
-                            ),
+                            !settingsController.hiddenApps.contains(
+                              e.packageName,
+                            ) &&
+                            (e.appName.toLowerCase().startsWith(
+                                  controller.searchEditingController.text
+                                      .trim()
+                                      .toLowerCase(),
+                                ) ||
+                                e.appName.toLowerCase().contains(
+                                  controller.searchEditingController.text
+                                      .trim()
+                                      .toLowerCase(),
+                                )),
                       )
                       .toList();
             },
@@ -65,7 +71,7 @@ class AppsPage extends StatelessWidget {
             () => ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               controller: mainController.scrollController,
-              physics: const BouncingScrollPhysics(),
+              physics: const FastBouncingScrollPhysics(),
               itemCount: controller.listedApps.length,
               itemBuilder: (context, index) {
                 final app = controller.listedApps[index];

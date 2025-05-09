@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nolauncher/core/utils/shared_pref_sercice.dart';
+import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class HomeController extends GetxController {
   final _prefs = Get.find<SharedPrefSercice>();
   final settingsController = Get.put(SettingsController());
+  final appsController = Get.put(AppsController());
 
   final RxList<String> pinnedApps = RxList([]);
   final RxString currentTime = ''.obs;

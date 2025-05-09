@@ -1,26 +1,32 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class MainController extends GetxController {
   static const lockPlatform = MethodChannel('com.fadilfadz.device_lock');
+  static const homeplatform = MethodChannel('com.fadilfadz.home_screen');
   static const settingsPlatform = MethodChannel(
     'com.fadilfadz.device_settings',
   );
 
   final settingsController = Get.put(SettingsController());
 
-  late PageController pageController;
-  late ScrollController scrollController;
+  final ScrollController scrollController = ScrollController();
+  final PageController pageController = PageController(initialPage: 2);
+  final currentPageIndex = 2.obs;
+  final showPageIndicator = false.obs;
+  final initialDragX = 0.0.obs;
+  bool isLauncherAlertShown = false;
+  Timer? _indicatorTimer;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-
-    pageController = PageController(initialPage: 2);
-    scrollController = ScrollController();
     scrollController.addListener(() {
       // If user is at the very top and scrolling up
       if (scrollController.position.pixels <= 0 &&
@@ -40,6 +46,15 @@ class MainController extends GetxController {
     super.onClose();
     pageController.dispose();
     scrollController.dispose();
+    _indicatorTimer?.cancel();
+  }
+
+  displayPageIndicator() async {
+    showPageIndicator.value = true;
+    _indicatorTimer?.cancel(); // cancel previous timer
+    _indicatorTimer = Timer(Duration(seconds: 2), () {
+      showPageIndicator.value = false;
+    });
   }
 
   Future<void> lockScreen() async {
@@ -56,6 +71,55 @@ class MainController extends GetxController {
       await settingsPlatform.invokeMethod('openDeviceAdminSettings');
     } on PlatformException catch (e) {
       print('Failed to open settings: ${e.message}');
+    }
+  }
+
+  static Future<bool> _isDefaultLauncher() async {
+    try {
+      final bool result = await homeplatform.invokeMethod('isDefaultLauncher');
+      return result;
+    } on PlatformException catch (e) {
+      print("Failed to check default launcher: '${e.message}'.");
+      return false;
+    }
+  }
+
+  static Future<void> _openDefaultLauncherSettings() async {
+    try {
+      await homeplatform.invokeMethod('openDefaultLauncherSettings');
+    } on PlatformException catch (e) {
+      print("Failed to open settings: '${e.message}'.");
+    }
+  }
+
+  Future<void> checkLauncherAndPrompt(BuildContext context) async {
+    bool isDefault = await _isDefaultLauncher();
+
+    if (!isDefault && !isLauncherAlertShown) {
+      showDialog(
+        context: context,
+        builder:
+            (BuildContext ctx) => AlertDialog(
+              title: Center(child: const Text(AppConstants.appName)),
+              content: const Text(
+                'This app is not set as the default home screen.',
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                    _openDefaultLauncherSettings(); // opens settings
+                  },
+                  child: const Text('Open Settings'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            ),
+      );
+      isLauncherAlertShown = true;
     }
   }
 }

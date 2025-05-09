@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/config/constants.dart';
-import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/home/presentation/home_controller.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   final controller = Get.put(HomeController());
-  final appsController = Get.put(AppsController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +36,17 @@ class HomePage extends StatelessWidget {
               'com.asus.deskclock',
               'com.evenwell.AlarmClock',
             ];
-            final clocks = appsController.allApps.where(
-              (e) =>
-                  e.appName.toLowerCase() == "clock" ||
-                  e.appName.toLowerCase() == "alarm",
+            final clocks = controller.appsController.allApps.where(
+              (e) => e.appName.toLowerCase() == "clock",
             );
-            for (final clock in clocks) {
-              if (clockPackages.contains(clock.packageName)) {
-                controller.launchApp(clock.packageName);
+            if (clocks.length > 1) {
+              for (final clock in clocks) {
+                if (clockPackages.contains(clock.packageName)) {
+                  controller.launchApp(clock.packageName);
+                }
               }
+            } else {
+              controller.launchApp(clocks.first.packageName);
             }
           },
           child: Padding(
@@ -92,13 +92,13 @@ class HomePage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
             child: Obx(
               () => Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children:
                     controller.pinnedApps.map((packageName) {
                       // Find the app with this package name
                       final appList =
-                          appsController.allApps
+                          controller.appsController.allApps
                               .where((app) => app.packageName == packageName)
                               .toList();
                       if (appList.isEmpty) {
@@ -133,7 +133,7 @@ class HomePage extends StatelessWidget {
 
         // Buttons
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+          padding: const EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -159,13 +159,17 @@ class HomePage extends StatelessWidget {
                     'com.lenovo.dialer',
                     'com.evenwell.Dialer',
                   ];
-                  final phones = appsController.allApps.where(
+                  final phones = controller.appsController.allApps.where(
                     (e) => e.appName.toLowerCase() == "phone",
                   );
-                  for (final phone in phones) {
-                    if (dialerPackages.contains(phone.packageName)) {
-                      controller.launchApp(phone.packageName);
+                  if (phones.length > 1) {
+                    for (final phone in phones) {
+                      if (dialerPackages.contains(phone.packageName)) {
+                        controller.launchApp(phone.packageName);
+                      }
                     }
+                  } else {
+                    controller.launchApp(phones.first.packageName);
                   }
                 },
                 icon: const Icon(Icons.phone, size: 28),
@@ -191,13 +195,17 @@ class HomePage extends StatelessWidget {
                     'com.evenwell.Camera2',
                     'com.android.camera2',
                   ];
-                  final cameras = appsController.allApps.where(
+                  final cameras = controller.appsController.allApps.where(
                     (e) => e.appName.toLowerCase() == "camera",
                   );
-                  for (final camera in cameras) {
-                    if (cameraPackages.contains(camera.packageName)) {
-                      controller.launchApp(camera.packageName);
+                  if (cameras.length > 1) {
+                    for (final camera in cameras) {
+                      if (cameraPackages.contains(camera.packageName)) {
+                        controller.launchApp(camera.packageName);
+                      }
                     }
+                  } else {
+                    controller.launchApp(cameras.first.packageName);
                   }
                 },
                 icon: const Icon(Icons.camera_alt, size: 28),

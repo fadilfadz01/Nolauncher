@@ -36,6 +36,14 @@ class AppTheme {
         borderSide: BorderSide(color: Colors.black),
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(Colors.black),
+        foregroundColor: WidgetStatePropertyAll(Colors.white),
+        overlayColor: WidgetStatePropertyAll(Colors.grey),
+      ),
+    ),
+    fontFamily: "ubuntu",
   );
 
   static ThemeData get darkTheme => ThemeData(
@@ -67,18 +75,28 @@ class AppTheme {
         borderSide: BorderSide(color: Colors.white),
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(Colors.white),
+        foregroundColor: WidgetStatePropertyAll(Colors.black),
+        overlayColor: WidgetStatePropertyAll(Colors.grey),
+      ),
+    ),
+    fontFamily: "ubuntu",
   );
 }
 
 class AppFontSizes {
+  static const xlargeSize = 34.0;
   static const largeSize = 32.0;
   static const regularSize = 28.0;
   static const smallSize = 24.0;
-  static const xsmallSize = 20.0;
-  static const xxsmallSize = 18.0;
+  static const xsmallSize = 22.0;
+  static const xxsmallSize = 20.0;
+  static const xxxsmallSize = 18.0;
 
   static const allAppsSize = regularSize;
-  static const pinnedAppsSize = 34.0;
+  static const pinnedAppsSize = xlargeSize;
 
   static const clockTimeSize = 60.0;
   static const clockDateSize = regularSize;

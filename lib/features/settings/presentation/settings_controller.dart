@@ -8,16 +8,20 @@ class SettingsController extends GetxController {
 
   final themeIcon = Icons.light_mode.obs;
   final isStatusbarVisible = true.obs;
-  final isClockFormat24 = true.obs;
   final isDoubleTapToLock = true.obs;
+  final isIndicatorVisible = true.obs;
+  final isClockFormat24 = true.obs;
+  final hiddenApps = <String>[].obs;
 
   @override
   void onInit() async {
     super.onInit();
     await _prefs.init();
     themeIcon.value = Get.isDarkMode ? Icons.light_mode : Icons.dark_mode;
-    isClockFormat24.value = _prefs.getValue('clockFormat', true);
+    hiddenApps.value = _prefs.getValue('hiddenApps', <String>[]);
     isDoubleTapToLock.value = _prefs.getValue('doubleTapToLock', true);
+    isIndicatorVisible.value = _prefs.getValue('pageIndicator', true);
+    isClockFormat24.value = _prefs.getValue('clockFormat', true);
     SystemChrome.setSystemUIChangeCallback((systemOverlaysAreVisible) async {
       Future.delayed(Duration(seconds: 2), () {
         _prefs.getValue('statusBarVisibility', true)
@@ -69,5 +73,18 @@ class SettingsController extends GetxController {
   setDoubleTapToLock(value) async {
     isDoubleTapToLock.value = value;
     await _prefs.setValue('doubleTapToLock', value);
+  }
+
+  setPageIndicator(value) async {
+    isIndicatorVisible.value = value;
+    await _prefs.setValue('pageIndicator', value);
+  }
+
+  pinnedAppReorder(value) {
+    _prefs.setValue('pinnedApps', value);
+  }
+
+  hiddenAppChanged() {
+    _prefs.setValue('hiddenApps', hiddenApps.toList());
   }
 }

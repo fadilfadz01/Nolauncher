@@ -7,20 +7,24 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/network/api_client.dart';
 import 'package:nolauncher/core/utils/shared_pref_sercice.dart';
+import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 import 'package:nolauncher/features/weather/data/weather.dart';
 
 class WeatherController extends GetxController {
   final api = Get.put(ApiClient());
   final _prefs = Get.find<SharedPrefSercice>();
+  final settingsController = Get.find<SettingsController>();
 
   final weatherData = Rx<WeatherResponse?>(null);
+  final lastUpdated = Rx<DateTime?>(null);
   final isLoading = true.obs;
   late Timer timer;
   late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    await _prefs.init();
     getWeatherInfo();
 
     timer = Timer.periodic(const Duration(hours: 1), (timer) {
@@ -49,6 +53,7 @@ class WeatherController extends GetxController {
     if (response != null && response.statusCode == 200) {
       final body = json.decode(response.body);
       weatherData.value = WeatherResponse.fromJson(body);
+      lastUpdated.value = DateTime.now();
     } else {
       print("Error response");
     }

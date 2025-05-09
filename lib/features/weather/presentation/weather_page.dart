@@ -6,7 +6,7 @@ import 'package:weather_icons/weather_icons.dart';
 
 class WeatherPage extends StatelessWidget {
   WeatherPage({super.key});
-  final WeatherController controller = Get.put(WeatherController());
+  final controller = Get.put(WeatherController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class WeatherPage extends StatelessWidget {
               )
               : SafeArea(
                 child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -69,7 +69,6 @@ class WeatherPage extends StatelessWidget {
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 20,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,14 +87,25 @@ class WeatherPage extends StatelessWidget {
                     '$region, $country',
                     style: const TextStyle(color: Colors.grey, fontSize: 16),
                   ),
-                  Text(
-                    DateFormat('EEEE, d MMMM').format(DateTime.now()),
-                    style: const TextStyle(color: Colors.grey, fontSize: 14),
+                  Row(
+                    children: [
+                      Text(
+                        "Last updated ${DateFormat(controller.settingsController.isClockFormat24.value ? "dd/MM/yyy HH:mm" : "dd/MM/yyy hh:mm aa").format(controller.lastUpdated.value ?? DateTime.now())}",
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: controller.getWeatherInfo,
+                        icon: Icon(Icons.replay_outlined),
+                      ),
+                    ],
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 12.0),
+                padding: const EdgeInsets.only(right: 14.0),
                 child: _buildWeatherIcon(
                   currentCondition?.weatherDesc[0].value ?? "",
                 ),

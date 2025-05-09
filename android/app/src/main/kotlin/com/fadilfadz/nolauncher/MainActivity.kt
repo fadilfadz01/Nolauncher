@@ -4,10 +4,14 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.media.session.MediaSessionManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivity
@@ -21,6 +25,7 @@ class MainActivity : FlutterActivity() {
     private val LOCK_CHANNEL = "com.fadilfadz.device_lock"
     private val EVENT_CHANNEL = "com.fadilfadz.media_updates"
     private val SETTINGS_CHANNEL = "com.fadilfadz.device_settings"
+    private val HOME_CHANNEL = "com.fadilfadz.home_screen"
 
     companion object {
         var eventSink: EventChannel.EventSink? = null
@@ -121,6 +126,33 @@ class MainActivity : FlutterActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 result.success(true)
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, HOME_CHANNEL).setMethodCallHandler {
+            call, result ->
+            if (call.method == "isDefaultLauncher") {
+                val pm = packageManager
+                val intent = Intent(Intent.ACTION_MAIN)
+                intent.addCategory(Intent.CATEGORY_HOME)
+                val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                val currentLauncher = resolveInfo?.activityInfo?.packageName
+                val isDefault = currentLauncher == packageName
+                result.success(isDefault)
+            } else if (call.method == "openDefaultLauncherSettings") {
+                try {
+                    val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Intent(Settings.ACTION_HOME_SETTINGS)
+                    } else {
+                        Intent(Intent.ACTION_MAIN).apply {
+                            addCategory(Intent.CATEGORY_HOME)
+                        }
+                    }
+                    startActivity(intent)
+                    result.success(true)
+                } catch (e: Exception) {
+                    result.error("UNAVAILABLE", "Could not open settings", e.message)
+                }
             }
         }
 

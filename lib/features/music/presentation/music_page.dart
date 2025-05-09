@@ -25,29 +25,34 @@ class MusicPage extends StatelessWidget {
                       // Music Thumbnail
                       thumbnailWidget,
 
-                      Column(
-                        children: [
-                          // Song Title
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24.0,
-                            ),
-                            child: Text(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Column(
+                          children: [
+                            // Song Title
+                            Text(
                               controller.title.value,
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                          // Artist Name
-                          Text(
-                            controller.artist.value,
-                            style: TextStyle(color: Colors.grey, fontSize: 18),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                            // Artist Name
+                            Text(
+                              controller.artist.value,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 18,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

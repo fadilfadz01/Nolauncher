@@ -1,8 +1,11 @@
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class AppsController extends GetxController {
+  final settingsController = Get.put(SettingsController());
+
   final TextEditingController searchEditingController = TextEditingController();
   final RxList<Application> allApps = RxList([]);
   final RxList<Application> listedApps = RxList([]);
@@ -34,6 +37,11 @@ class AppsController extends GetxController {
     );
 
     allApps.value = apps;
-    listedApps.value = apps;
+    listedApps.value =
+        apps
+            .where(
+              (e) => !settingsController.hiddenApps.contains(e.packageName),
+            )
+            .toList();
   }
 }
