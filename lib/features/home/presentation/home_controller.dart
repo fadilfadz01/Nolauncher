@@ -66,22 +66,27 @@ class HomeController extends GetxController {
     await _prefs.setValue('pinnedApps', pinnedApps.toList());
   }
 
-  void togglePinApp(String packageName) {
+  bool togglePinApp(String packageName) {
     if (pinnedApps.contains(packageName)) {
       pinnedApps.remove(packageName);
     } else {
       if (pinnedApps.length < 6) {
         pinnedApps.add(packageName);
+        return true;
       } else {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text('You can only pin up to 6 apps.'),
-        //     backgroundColor: Colors.red,
-        //   ),
-        // );
+        Get.showSnackbar(
+          GetSnackBar(
+            message: "You’ve reached the maximum of 6 pinned apps.",
+            backgroundColor: Colors.grey,
+            duration: Duration(seconds: 2),
+            borderRadius: 12,
+            margin: EdgeInsets.all(10),
+          ),
+        );
       }
     }
     savePinnedApps();
+    return false;
   }
 
   Future<bool?> launchApp(packageName) async {

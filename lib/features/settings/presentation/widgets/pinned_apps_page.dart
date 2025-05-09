@@ -28,13 +28,26 @@ class PinnedAppsPage extends StatelessWidget {
               ? Padding(
                 padding: const EdgeInsets.all(20),
                 child: ReorderableListView.builder(
+                  onReorderStart:
+                      (index) => controller.holdingPinnedAppIndex.value = index,
+                  onReorderEnd:
+                      (index) => controller.holdingPinnedAppIndex.value = null,
                   itemBuilder: (context, index) {
-                    return ListTile(
+                    return Obx(
                       key: ValueKey(index),
-                      trailing: Icon(Icons.drag_handle),
-                      title: Text(
-                        pinnedApps[index].appName,
-                        style: TextStyle(fontSize: 18),
+                      () => ListTile(
+                        trailing: Icon(Icons.drag_handle),
+                        title: Text(
+                          pinnedApps[index].appName,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        tileColor:
+                            controller.holdingPinnedAppIndex.value == index
+                                ? Colors.grey
+                                : null,
                       ),
                     );
                   },

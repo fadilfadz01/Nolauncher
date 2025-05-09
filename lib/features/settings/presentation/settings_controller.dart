@@ -12,6 +12,7 @@ class SettingsController extends GetxController {
   final isIndicatorVisible = true.obs;
   final isClockFormat24 = true.obs;
   final hiddenApps = <String>[].obs;
+  final holdingPinnedAppIndex = RxnInt();
 
   @override
   void onInit() async {
