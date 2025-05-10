@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 
 class MainController extends GetxController {
   static const lockPlatform = MethodChannel('com.fadilfadz.device_lock');
@@ -16,8 +17,8 @@ class MainController extends GetxController {
 
   final settingsController = Get.put(SettingsController());
 
-  final ScrollController scrollController = ScrollController();
-  final PageController pageController = PageController(initialPage: 2);
+  final scrollController = ScrollController();
+  final pageController = PreloadPageController(initialPage: 2);
   final currentPageIndex = 2.obs;
   final showPageIndicator = false.obs;
   final initialDragX = 0.0.obs;
@@ -96,29 +97,28 @@ class MainController extends GetxController {
     bool isDefault = await _isDefaultLauncher();
 
     if (!isDefault && !isLauncherAlertShown) {
-      showDialog(
-        context: context,
-        builder:
-            (BuildContext ctx) => AlertDialog(
-              title: Center(child: const Text(AppConstants.appName)),
-              content: const Text(
-                'This app is not set as the default home screen.',
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                    _openDefaultLauncherSettings(); // opens settings
-                  },
-                  child: const Text('Open Settings'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(ctx).pop(),
-                  child: const Text('Cancel'),
-                ),
-              ],
+      Get.dialog(
+        AlertDialog(
+          title: Center(child: const Text(AppConstants.appName)),
+          content: const Text(
+            'This app is not set as the default home screen.',
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Get.back(); // Closes the dialog
+                _openDefaultLauncherSettings(); // Opens settings
+              },
+              child: const Text('Open Settings'),
             ),
+            ElevatedButton(
+              onPressed: () => Get.back(),
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
       );
+
       isLauncherAlertShown = true;
     }
   }

@@ -7,6 +7,7 @@ import 'package:nolauncher/features/main/presentation/main_controller.dart';
 import 'package:nolauncher/features/music/presentation/music_page.dart';
 import 'package:nolauncher/features/settings/presentation/settings_page.dart';
 import 'package:nolauncher/features/weather/presentation/weather_page.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({super.key});
@@ -38,7 +39,7 @@ class MainPage extends StatelessWidget {
                       ? controller.lockScreen()
                       : null;
                 },
-                child: PageView.builder(
+                child: PreloadPageView.builder(
                   controller: controller.pageController,
                   scrollDirection: Axis.vertical,
                   itemCount: pages.length,

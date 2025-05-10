@@ -43,6 +43,7 @@ dependencies:
   geolocator: ^14.0.0
   geocoding: ^3.0.0
   connectivity_plus: ^6.1.4
+  preload_page_view: ^0.2.0
 
 dev_dependencies:
   flutter_test:
