@@ -18,8 +18,9 @@ class MainController extends GetxController {
   final settingsController = Get.put(SettingsController());
 
   final scrollController = ScrollController();
-  final pageController = PreloadPageController(initialPage: 2);
-  final currentPageIndex = 2.obs;
+  static const defaultPage = 2;
+  final pageController = PreloadPageController(initialPage: defaultPage);
+  final currentPageIndex = defaultPage.obs;
   final showPageIndicator = false.obs;
   final initialDragX = 0.0.obs;
   bool isLauncherAlertShown = false;
@@ -33,11 +34,7 @@ class MainController extends GetxController {
       if (scrollController.position.pixels <= 0 &&
           scrollController.position.userScrollDirection ==
               ScrollDirection.forward) {
-        pageController.animateToPage(
-          2,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+        switchPageToDefault();
       }
     });
   }
@@ -48,6 +45,14 @@ class MainController extends GetxController {
     pageController.dispose();
     scrollController.dispose();
     _indicatorTimer?.cancel();
+  }
+
+  switchPageToDefault() {
+    pageController.animateToPage(
+      defaultPage,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   displayPageIndicator() async {

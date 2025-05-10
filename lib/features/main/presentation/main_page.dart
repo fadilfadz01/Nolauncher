@@ -23,11 +23,7 @@ class MainPage extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        controller.pageController.animateToPage(
-          2,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+        controller.switchPageToDefault();
       },
       child: Scaffold(
         body: SafeArea(
