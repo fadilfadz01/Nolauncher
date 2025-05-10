@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
@@ -66,11 +67,13 @@ class HiddenAppsPage extends StatelessWidget {
             ),
             title: Text(
               appsController.allApps[index].appName,
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: AppFontSizes.appRegularSize),
             ),
             //onTap: () {},
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(
+                AppBorderSizes.defaultBordersize,
+              ),
             ),
           );
         },

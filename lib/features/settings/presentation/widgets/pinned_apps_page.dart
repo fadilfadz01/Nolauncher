@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/home/presentation/home_controller.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
@@ -44,14 +45,18 @@ class PinnedAppsPage extends StatelessWidget {
                         trailing: Icon(Icons.drag_handle),
                         title: Text(
                           pinnedApps[index].appName,
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: AppFontSizes.appRegularSize,
+                          ),
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(
+                            AppBorderSizes.defaultBordersize,
+                          ),
                         ),
                         tileColor:
                             controller.holdingPinnedAppIndex.value == index
-                                ? Colors.grey
+                                ? AppColors.tertiary
                                 : null,
                       ),
                     );
@@ -77,7 +82,7 @@ class PinnedAppsPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey,
+                    color: AppColors.tertiary,
                   ),
                 ),
               ),

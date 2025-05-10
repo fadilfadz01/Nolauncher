@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/features/music/presentation/music_controller.dart';
 
 class MusicPage extends StatelessWidget {
@@ -8,7 +9,6 @@ class MusicPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.checkNotificationPermission();
     final thumbnailWidget = Obx(
       () => controller.buildThumbnail(context: context),
     );
@@ -46,8 +46,8 @@ class MusicPage extends StatelessWidget {
                             Text(
                               controller.artist.value,
                               style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 18,
+                                color: AppColors.tertiary,
+                                fontSize: AppFontSizes.appRegularSize,
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 2,
@@ -81,7 +81,7 @@ class MusicPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey,
+                              color: AppColors.tertiary,
                               blurRadius: 25,
                               spreadRadius: 1,
                             ),
@@ -122,13 +122,13 @@ class MusicPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   spacing: 12,
                   children: [
-                    Icon(Icons.music_off, size: 60, color: Colors.grey),
+                    Icon(Icons.music_off, size: 60, color: AppColors.tertiary),
                     Text(
                       "No media playing",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
-                        color: Colors.grey,
+                        color: AppColors.tertiary,
                       ),
                     ),
                   ],
@@ -143,7 +143,7 @@ class MusicPage extends StatelessWidget {
                   children: [
                     const Text(
                       "Enable Notification Access",
-                      style: TextStyle(fontSize: 26),
+                      style: TextStyle(fontSize: AppFontSizes.appTitleSize),
                     ),
                     const Text(
                       "To show media info, enable notification access.",
@@ -155,10 +155,7 @@ class MusicPage extends StatelessWidget {
                     await controller.openNotificationSettings();
                     Get.back();
                   },
-                  child: const Text(
-                    "Open Settings",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                  child: const Text("Open Settings"),
                 ),
               ],
             ),

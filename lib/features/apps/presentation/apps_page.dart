@@ -26,7 +26,7 @@ class AppsPage extends StatelessWidget {
               hintText: "Search apps",
               hintStyle: TextStyle(
                 fontSize: AppFontSizes.smallSize,
-                color: Colors.grey,
+                color: AppColors.tertiary,
               ),
               suffixIcon: Obx(() {
                 return controller.searchText.value.isNotEmpty
@@ -78,7 +78,9 @@ class AppsPage extends StatelessWidget {
                 return Obx(
                   () => ListTile(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(
+                        AppBorderSizes.defaultBordersize,
+                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(

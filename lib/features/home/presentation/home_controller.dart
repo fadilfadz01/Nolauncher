@@ -4,6 +4,7 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/core/utils/shared_pref_sercice.dart';
 import 'package:nolauncher/features/apps/presentation/apps_controller.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
@@ -77,9 +78,9 @@ class HomeController extends GetxController {
         Get.showSnackbar(
           GetSnackBar(
             message: "You’ve reached the maximum of 6 pinned apps.",
-            backgroundColor: Colors.grey,
+            backgroundColor: AppColors.tertiary,
             duration: Duration(seconds: 2),
-            borderRadius: 12,
+            borderRadius: AppBorderSizes.defaultBordersize,
             margin: EdgeInsets.all(10),
           ),
         );

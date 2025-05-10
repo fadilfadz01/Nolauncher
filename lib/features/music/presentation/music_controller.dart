@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/core/utils/media_stream_service.dart';
 import 'package:nolauncher/features/music/data/music.dart';
 
 enum MusicCommands { play, pause, next, previous }
 
-class MusicController extends GetxController {
+class MusicController extends GetxController with WidgetsBindingObserver {
   static const platform = MethodChannel('com.fadilfadz.media_info');
 
   final isPermissionAllowed = false.obs;
@@ -22,6 +23,8 @@ class MusicController extends GetxController {
   @override
   void onInit() {
     getNowPlaying();
+    checkNotificationPermission();
+    WidgetsBinding.instance.addObserver(this);
     MediaStreamService.mediaUpdates.listen((event) {
       final mediaInfo = Music.fromMap(event);
 
@@ -33,6 +36,19 @@ class MusicController extends GetxController {
       isAvailable.value = mediaInfo.isAvailable;
     });
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      checkNotificationPermission();
+    }
   }
 
   Future<void> checkNotificationPermission() async {
@@ -124,9 +140,9 @@ class MusicController extends GetxController {
       width: MediaQuery.of(context).size.width / 1.6,
       height: MediaQuery.of(context).size.width / 1.6,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppBorderSizes.defaultBordersize),
         boxShadow: [
-          BoxShadow(color: Colors.grey, blurRadius: 15, spreadRadius: 1),
+          BoxShadow(color: AppColors.tertiary, blurRadius: 15, spreadRadius: 1),
         ],
         image: DecorationImage(image: image, fit: BoxFit.cover),
       ),
@@ -138,14 +154,14 @@ class MusicController extends GetxController {
       width: MediaQuery.of(context).size.width / 1.6,
       height: MediaQuery.of(context).size.width / 1.6,
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.tertiary[900],
+        borderRadius: BorderRadius.circular(AppBorderSizes.defaultBordersize),
         boxShadow: [
-          BoxShadow(color: Colors.grey, blurRadius: 15, spreadRadius: 1),
+          BoxShadow(color: AppColors.tertiary, blurRadius: 15, spreadRadius: 1),
         ],
       ),
       child: Center(
-        child: Icon(Icons.music_note, size: 120, color: Colors.grey),
+        child: Icon(Icons.music_note, size: 120, color: AppColors.tertiary),
       ),
     );
   }

@@ -9,7 +9,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.black,
+      systemNavigationBarColor: AppColors.primary,
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );

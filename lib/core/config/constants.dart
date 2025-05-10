@@ -6,41 +6,72 @@ class AppConstants {
   static const String appBuildNumber = '1';
 }
 
+class AppFontSizes {
+  static const xlargeSize = 34.0;
+  static const largeSize = 32.0;
+  static const mediumSize = 30.0;
+  static const xMediumSize = 28.0;
+  static const xxMediumSize = 26.0;
+  static const smallSize = 24.0;
+  static const xSmallSize = 22.0;
+  static const xxSmallSize = 20.0;
+  static const xxxSmallSize = 18.0;
+
+  static const appTitleSize = xxMediumSize;
+  static const appRegularSize = xxxSmallSize;
+
+  static const allAppsSize = xMediumSize;
+  static const pinnedAppsSize = xlargeSize;
+
+  static const clockTimeSize = 60.0;
+  static const clockDateSize = xMediumSize;
+}
+
+class AppBorderSizes {
+  static const defaultBordersize = 12.0;
+}
+
+class AppColors {
+  static const primary = Colors.black;
+  static const secondary = Colors.white;
+  static const tertiary = Colors.grey;
+}
+
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Colors.white,
-    primaryColor: Colors.black,
+    scaffoldBackgroundColor: AppColors.secondary,
+    primaryColor: AppColors.primary,
     colorScheme: const ColorScheme.light(
-      primary: Colors.black,
-      onPrimary: Colors.white,
-      surface: Colors.white,
-      onSurface: Colors.black,
+      primary: AppColors.primary,
+      onPrimary: AppColors.secondary,
+      surface: AppColors.secondary,
+      onSurface: AppColors.primary,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
+      backgroundColor: AppColors.secondary,
+      foregroundColor: AppColors.primary,
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.black),
-      bodyMedium: TextStyle(color: Colors.black),
-      bodySmall: TextStyle(color: Colors.black),
+      bodyLarge: TextStyle(color: AppColors.primary),
+      bodyMedium: TextStyle(color: AppColors.primary),
+      bodySmall: TextStyle(color: AppColors.primary),
     ),
-    iconTheme: const IconThemeData(color: Colors.black),
+    iconTheme: const IconThemeData(color: AppColors.primary),
     inputDecorationTheme: const InputDecorationTheme(
-      hintStyle: TextStyle(color: Colors.black54),
+      hintStyle: TextStyle(color: AppColors.tertiary),
       enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: AppColors.primary),
       ),
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: AppColors.primary),
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Colors.black),
-        foregroundColor: WidgetStatePropertyAll(Colors.white),
-        overlayColor: WidgetStatePropertyAll(Colors.grey),
+        backgroundColor: WidgetStatePropertyAll(AppColors.primary),
+        foregroundColor: WidgetStatePropertyAll(AppColors.secondary),
+        overlayColor: WidgetStatePropertyAll(AppColors.tertiary),
       ),
     ),
     fontFamily: "ubuntu",
@@ -48,56 +79,40 @@ class AppTheme {
 
   static ThemeData get darkTheme => ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.black,
-    primaryColor: Colors.white,
+    scaffoldBackgroundColor: AppColors.primary,
+    primaryColor: AppColors.secondary,
     colorScheme: const ColorScheme.dark(
-      primary: Colors.white,
-      onPrimary: Colors.black,
-      surface: Colors.black,
-      onSurface: Colors.white,
+      primary: AppColors.secondary,
+      onPrimary: AppColors.primary,
+      surface: AppColors.primary,
+      onSurface: AppColors.secondary,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.black,
-      foregroundColor: Colors.white,
+      backgroundColor: AppColors.primary,
+      foregroundColor: AppColors.secondary,
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: Colors.white),
-      bodyMedium: TextStyle(color: Colors.white),
-      bodySmall: TextStyle(color: Colors.white),
+      bodyLarge: TextStyle(color: AppColors.secondary),
+      bodyMedium: TextStyle(color: AppColors.secondary),
+      bodySmall: TextStyle(color: AppColors.secondary),
     ),
-    iconTheme: const IconThemeData(color: Colors.white),
+    iconTheme: const IconThemeData(color: AppColors.secondary),
     inputDecorationTheme: const InputDecorationTheme(
-      hintStyle: TextStyle(color: Colors.white70),
+      hintStyle: TextStyle(color: AppColors.tertiary),
       enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
+        borderSide: BorderSide(color: AppColors.secondary),
       ),
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
+        borderSide: BorderSide(color: AppColors.secondary),
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Colors.white),
-        foregroundColor: WidgetStatePropertyAll(Colors.black),
-        overlayColor: WidgetStatePropertyAll(Colors.grey),
+        backgroundColor: WidgetStatePropertyAll(AppColors.secondary),
+        foregroundColor: WidgetStatePropertyAll(AppColors.primary),
+        overlayColor: WidgetStatePropertyAll(AppColors.tertiary),
       ),
     ),
     fontFamily: "ubuntu",
   );
-}
-
-class AppFontSizes {
-  static const xlargeSize = 34.0;
-  static const largeSize = 32.0;
-  static const regularSize = 28.0;
-  static const smallSize = 24.0;
-  static const xsmallSize = 22.0;
-  static const xxsmallSize = 20.0;
-  static const xxxsmallSize = 18.0;
-
-  static const allAppsSize = regularSize;
-  static const pinnedAppsSize = xlargeSize;
-
-  static const clockTimeSize = 60.0;
-  static const clockDateSize = regularSize;
 }

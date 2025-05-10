@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/core/utils/custom_scroll_physics.dart';
 import 'package:nolauncher/features/apps/presentation/apps_page.dart';
 import 'package:nolauncher/features/home/presentation/home_page.dart';
@@ -116,10 +117,12 @@ class MainPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(
+                          AppBorderSizes.defaultBordersize,
+                        ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey,
+                            color: AppColors.tertiary,
                             blurRadius: 15,
                             spreadRadius: 1,
                           ),
@@ -156,7 +159,9 @@ class MainPage extends StatelessWidget {
                                   color:
                                       isActive
                                           ? Theme.of(context).primaryColor
-                                          : Colors.grey.withValues(alpha: 0.5),
+                                          : AppColors.tertiary.withValues(
+                                            alpha: 0.5,
+                                          ),
                                 ),
                               ),
                             );

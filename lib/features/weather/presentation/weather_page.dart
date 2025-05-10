@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:nolauncher/core/config/constants.dart';
 import 'package:nolauncher/features/weather/presentation/weather_controller.dart';
 import 'package:weather_icons/weather_icons.dart';
 
@@ -25,13 +26,17 @@ class WeatherPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   spacing: 12,
                   children: [
-                    Icon(Icons.signal_wifi_off, size: 60, color: Colors.grey),
+                    Icon(
+                      Icons.signal_wifi_off,
+                      size: 60,
+                      color: AppColors.tertiary,
+                    ),
                     Text(
                       "No internet connection",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
-                        color: Colors.grey,
+                        color: AppColors.tertiary,
                       ),
                     ),
                   ],
@@ -85,14 +90,17 @@ class WeatherPage extends StatelessWidget {
                   ),
                   Text(
                     '$region, $country',
-                    style: const TextStyle(color: Colors.grey, fontSize: 16),
+                    style: const TextStyle(
+                      color: AppColors.tertiary,
+                      fontSize: 16,
+                    ),
                   ),
                   Row(
                     children: [
                       Text(
                         "Last updated ${DateFormat(controller.settingsController.isClockFormat24.value ? "dd/MM/yyy HH:mm" : "dd/MM/yyy hh:mm aa").format(controller.lastUpdated.value ?? DateTime.now())}",
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: AppColors.tertiary,
                           fontSize: 14,
                         ),
                       ),
@@ -129,11 +137,16 @@ class WeatherPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     currentCondition?.weatherDesc[0].value ?? "",
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(
+                      fontSize: AppFontSizes.appRegularSize,
+                    ),
                   ),
                   Text(
                     'Feels like ${currentCondition?.feelsLikeC}°',
-                    style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    style: const TextStyle(
+                      color: AppColors.tertiary,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -177,8 +190,10 @@ class WeatherPage extends StatelessWidget {
                         vertical: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.grey.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppColors.tertiary.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(
+                          AppBorderSizes.defaultBordersize,
+                        ),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -238,8 +253,10 @@ class WeatherPage extends StatelessWidget {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.tertiary.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(
+                    AppBorderSizes.defaultBordersize,
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -357,8 +374,8 @@ class WeatherPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.tertiary.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(AppBorderSizes.defaultBordersize),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +390,10 @@ class WeatherPage extends StatelessWidget {
           const Spacer(),
           Text(
             value,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: AppFontSizes.appRegularSize,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

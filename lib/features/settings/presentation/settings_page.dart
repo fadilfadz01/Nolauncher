@@ -36,7 +36,9 @@ class SettingsPage extends StatelessWidget {
                       children: [
                         Text(
                           "Status bar visibility",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: AppFontSizes.appRegularSize,
+                          ),
                         ),
                         Obx(
                           () => Switch(
@@ -51,7 +53,9 @@ class SettingsPage extends StatelessWidget {
                       children: [
                         Text(
                           "Double tap to screen lock",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: AppFontSizes.appRegularSize,
+                          ),
                         ),
                         Obx(
                           () => Switch(
@@ -64,7 +68,12 @@ class SettingsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Page indicator", style: TextStyle(fontSize: 18)),
+                        Text(
+                          "Page indicator",
+                          style: TextStyle(
+                            fontSize: AppFontSizes.appRegularSize,
+                          ),
+                        ),
                         Obx(
                           () => Switch(
                             value: controller.isIndicatorVisible.value,
@@ -76,7 +85,12 @@ class SettingsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("24 hour clock", style: TextStyle(fontSize: 18)),
+                        Text(
+                          "24 hour clock",
+                          style: TextStyle(
+                            fontSize: AppFontSizes.appRegularSize,
+                          ),
+                        ),
                         Obx(
                           () => Switch(
                             value: controller.isClockFormat24.value,
@@ -89,14 +103,14 @@ class SettingsPage extends StatelessWidget {
                       onPressed: () => Get.to(() => PinnedAppsPage()),
                       child: Text(
                         "Pinned Apps",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: AppFontSizes.appRegularSize),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () => Get.to(() => HiddenAppsPage()),
                       child: Text(
                         "Hidden Apps",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: AppFontSizes.appRegularSize),
                       ),
                     ),
                   ],

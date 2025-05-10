@@ -98,11 +98,15 @@ class MainController extends GetxController {
 
     if (!isDefault && !isLauncherAlertShown) {
       Get.dialog(
+        barrierColor: AppColors.tertiary.withValues(alpha: 0.5),
         AlertDialog(
-          title: Center(child: const Text(AppConstants.appName)),
-          content: const Text(
-            'This app is not set as the default home screen.',
+          title: Center(
+            child: const Text(
+              AppConstants.appName,
+              style: TextStyle(fontSize: AppFontSizes.appTitleSize),
+            ),
           ),
+          content: const Text('The app is not set as the default home screen.'),
           actions: [
             ElevatedButton(
               onPressed: () {
