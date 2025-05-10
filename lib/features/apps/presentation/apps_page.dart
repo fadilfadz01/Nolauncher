@@ -36,7 +36,7 @@ class AppsPage extends StatelessWidget {
                         controller.searchEditingController.clear();
                         controller.searchText.value =
                             ''; // Reset the observable text
-                        controller.listedApps.value = controller.allApps;
+                        controller.listApps();
                       },
                     )
                     : const SizedBox.shrink();

@@ -37,8 +37,12 @@ class AppsController extends GetxController {
     );
 
     allApps.value = apps;
+    listApps();
+  }
+
+  listApps() {
     listedApps.value =
-        apps
+        allApps
             .where(
               (e) => !settingsController.hiddenApps.contains(e.packageName),
             )
