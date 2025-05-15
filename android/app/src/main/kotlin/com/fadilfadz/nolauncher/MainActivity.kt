@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.MediaMetadata
@@ -21,11 +22,14 @@ import io.flutter.plugin.common.EventChannel
 import java.io.ByteArrayOutputStream
 
 class MainActivity : FlutterActivity() {
-    private val MEDIA_CHANNEL = "com.fadilfadz.media_info"
-    private val LOCK_CHANNEL = "com.fadilfadz.device_lock"
-    private val EVENT_CHANNEL = "com.fadilfadz.media_updates"
-    private val SETTINGS_CHANNEL = "com.fadilfadz.device_settings"
-    private val HOME_CHANNEL = "com.fadilfadz.home_screen"
+    private val MEDIA_CHANNEL = "com.fadilfadz.nolauncher/media_info"
+    private val LOCK_CHANNEL = "com.fadilfadz.nolauncher/device_lock"
+    private val EVENT_CHANNEL = "com.fadilfadz.nolauncher/media_updates"
+    private val SETTINGS_CHANNEL = "com.fadilfadz.nolauncher/device_settings"
+    private val HOME_CHANNEL = "com.fadilfadz.nolauncher/home_screen"
+    private val APP_CHANNEL = "com.fadilfadz.nolauncher/app_changes"
+
+    private var appChangeReceiver: AppChangeReceiver? = null
 
     companion object {
         var eventSink: EventChannel.EventSink? = null
@@ -196,6 +200,37 @@ class MainActivity : FlutterActivity() {
                 }
             }
         )
+
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, APP_CHANNEL).setStreamHandler(
+            object : EventChannel.StreamHandler {
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                    AppChangeStreamHandler.eventSink = events
+                }
+
+                override fun onCancel(arguments: Any?) {
+                    AppChangeStreamHandler.eventSink = null
+                }
+            }
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        appChangeReceiver = AppChangeReceiver()
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addDataScheme("package")
+        }
+        registerReceiver(appChangeReceiver, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (appChangeReceiver != null) {
+            unregisterReceiver(appChangeReceiver)
+        }
     }
 
     private fun bitmapToBase64(bitmap: Bitmap): String {

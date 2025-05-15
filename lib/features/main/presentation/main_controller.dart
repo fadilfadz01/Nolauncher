@@ -9,10 +9,14 @@ import 'package:nolauncher/features/settings/presentation/settings_controller.da
 import 'package:preload_page_view/preload_page_view.dart';
 
 class MainController extends GetxController {
-  static const lockPlatform = MethodChannel('com.fadilfadz.device_lock');
-  static const homeplatform = MethodChannel('com.fadilfadz.home_screen');
+  static const lockPlatform = MethodChannel(
+    'com.fadilfadz.nolauncher/device_lock',
+  );
+  static const homeplatform = MethodChannel(
+    'com.fadilfadz.nolauncher/home_screen',
+  );
   static const settingsPlatform = MethodChannel(
-    'com.fadilfadz.device_settings',
+    'com.fadilfadz.nolauncher/device_settings',
   );
 
   final settingsController = Get.put(SettingsController());

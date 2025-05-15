@@ -92,7 +92,75 @@ class AppsPage extends StatelessWidget {
                     ),
                     onTap: () => homeController.launchApp(app.packageName),
                     onLongPress: () async {
-                      homeController.togglePinApp(app.packageName);
+                      showDialog(
+                        context: context,
+                        barrierColor: Colors.grey.withValues(
+                          alpha: 0.3,
+                        ), // Dim background
+                        builder: (context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            insetPadding: const EdgeInsets.symmetric(
+                              horizontal: 50,
+                              vertical: 200,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    app.appName,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ListTile(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    leading:
+                                        homeController.pinnedApps.contains(
+                                              app.packageName,
+                                            )
+                                            ? const Icon(
+                                              Icons.push_pin_outlined,
+                                            )
+                                            : const Icon(Icons.push_pin),
+                                    title:
+                                        homeController.pinnedApps.contains(
+                                              app.packageName,
+                                            )
+                                            ? const Text('Unpin')
+                                            : const Text('Pin'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      homeController.togglePinApp(
+                                        app.packageName,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    leading: const Icon(Icons.delete),
+                                    title: const Text('Uninstall'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      controller.uninstallApp(app.packageName);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     },
                     trailing:
                         homeController.pinnedApps.contains(app.packageName)

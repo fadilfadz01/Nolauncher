@@ -10,7 +10,7 @@ import 'package:nolauncher/features/music/data/music.dart';
 enum MusicCommands { play, pause, next, previous }
 
 class MusicController extends GetxController with WidgetsBindingObserver {
-  static const platform = MethodChannel('com.fadilfadz.media_info');
+  static const platform = MethodChannel('com.fadilfadz.nolauncher/media_info');
 
   final isPermissionAllowed = false.obs;
   final isAvailable = false.obs;

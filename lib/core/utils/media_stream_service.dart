@@ -1,7 +1,9 @@
 import 'package:flutter/services.dart';
 
 class MediaStreamService {
-  static const _mediaUpdates = EventChannel('com.fadilfadz.media_updates');
+  static const _mediaUpdates = EventChannel(
+    'com.fadilfadz.nolauncher/media_updates',
+  );
 
   static Stream<Map<String, dynamic>> get mediaUpdates {
     return _mediaUpdates.receiveBroadcastStream().map((event) {

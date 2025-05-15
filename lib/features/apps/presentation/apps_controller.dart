@@ -1,6 +1,7 @@
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nolauncher/core/utils/app_event_listener.dart';
 import 'package:nolauncher/features/settings/presentation/settings_controller.dart';
 
 class AppsController extends GetxController {
@@ -13,6 +14,11 @@ class AppsController extends GetxController {
 
   @override
   void onInit() {
+    final appListener = AppEventListener();
+
+    appListener.startListening((eventType, packageName) {
+      loadApps();
+    });
     searchEditingController.addListener(() {
       searchText.value = searchEditingController.text;
     });
@@ -47,5 +53,9 @@ class AppsController extends GetxController {
               (e) => !settingsController.hiddenApps.contains(e.packageName),
             )
             .toList();
+  }
+
+  uninstallApp(String packageName) async {
+    await DeviceApps.uninstallApp(packageName);
   }
 }
