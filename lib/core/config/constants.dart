@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppConstants {
   static const String appName = 'Nolauncher';
-  static const String appVersion = '1.0.0';
+  static const String appVersion = '1.0.1';
   static const String appBuildNumber = '1';
 }
 

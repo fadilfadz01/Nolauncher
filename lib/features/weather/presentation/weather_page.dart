@@ -131,24 +131,27 @@ class WeatherPage extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16),
-                  Text(
-                    currentCondition?.weatherDesc[0].value ?? "",
-                    style: const TextStyle(
-                      fontSize: AppFontSizes.appRegularSize,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
+                      currentCondition?.weatherDesc[0].value ?? "",
+                      style: const TextStyle(
+                        fontSize: AppFontSizes.appRegularSize,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Text(
-                    'Feels like ${currentCondition?.feelsLikeC}°',
-                    style: const TextStyle(
-                      color: AppColors.tertiary,
-                      fontSize: 14,
+                    Text(
+                      'Feels like ${currentCondition?.feelsLikeC}°',
+                      style: const TextStyle(
+                        color: AppColors.tertiary,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
